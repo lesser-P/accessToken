@@ -1,0 +1,13 @@
+mysql:
+  path: "127.0.0.1"
+  port: "3306"
+  db-name: "accessToken"
+  username: "root"
+  password: "root"
+system:
+  port: ":8080"
+  router-prefix: "access"
+jwt:
+  key: "access"
+  expires: "7200"
+  issuer: "0xYe"
