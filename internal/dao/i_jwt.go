@@ -5,12 +5,12 @@ import (
 	"gorm.io/gorm"
 )
 
-type Dao interface {
+type TokenDao interface {
 	CreateTokenRecord(token string, userId int) error
 	GetRecordById(userId int) (*system.TokenDetails, error)
 }
 
-func NewDao(db *gorm.DB) Dao {
+func NewJwtDao(db *gorm.DB) TokenDao {
 	return &JwtDao{
 		db: db,
 	}

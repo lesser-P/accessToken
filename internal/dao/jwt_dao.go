@@ -7,8 +7,6 @@ import (
 	"strconv"
 )
 
-//var db = global.GAL_DB
-
 const (
 	EMPTY = ""
 )

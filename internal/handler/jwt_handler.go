@@ -14,9 +14,8 @@ func NewJwtApi() *JwtHandler {
 	return &JwtHandler{}
 }
 
-var jwtService = service.NewJwtService()
-
 func (jwt *JwtHandler) GenToken(c *gin.Context) {
+	var jwtService = service.NewJwtService()
 	userid := c.Query("userid")
 	id, err := strconv.Atoi(userid)
 	if err != nil {

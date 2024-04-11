@@ -8,12 +8,12 @@ import (
 )
 
 type JwtService struct {
-	dao dao.Dao
+	dao dao.TokenDao
 }
 
 func NewJwtService() *JwtService {
 	return &JwtService{
-		dao: dao.NewDao(global.GAL_DB),
+		dao: dao.NewJwtDao(global.GAL_DB),
 	}
 }
 
@@ -29,7 +29,7 @@ func (jwt *JwtService) GenerateToken(userId int) (string, error) {
 	if err != nil {
 		return EMPTY, err
 	}
-	// TODO 引用透明性
+
 	record, err := jwt.dao.GetRecordById(userId)
 	if err != nil {
 		return EMPTY, err
