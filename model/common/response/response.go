@@ -16,34 +16,34 @@ const (
 	ERROR   = 500
 )
 
-func Result(code int, data any, msg string, c *gin.Context) {
-	c.JSONP(http.StatusOK, Response{
+func Result(code int, data any, msg string, ctx *gin.Context) {
+	ctx.JSONP(http.StatusOK, Response{
 		Code: code,
 		Data: data,
 		Msg:  msg,
 	})
 }
 
-func Ok(c *gin.Context) {
-	Result(SUCCESS, nil, "操作成功", c)
+func Ok(ctx *gin.Context) {
+	Result(SUCCESS, nil, "操作成功", ctx)
 }
 
-func OkWithMessage(c *gin.Context, msg string) {
-	Result(SUCCESS, nil, msg, c)
+func OkWithMessage(ctx *gin.Context, msg string) {
+	Result(SUCCESS, nil, msg, ctx)
 }
 
-func OkWithData(c *gin.Context, data any) {
-	Result(SUCCESS, data, "操作成功", c)
+func OkWithData(ctx *gin.Context, data any) {
+	Result(SUCCESS, data, "操作成功", ctx)
 }
 
-func Fail(c *gin.Context) {
-	Result(ERROR, nil, "操作失败", c)
+func Fail(ctx *gin.Context) {
+	Result(ERROR, nil, "操作失败", ctx)
 }
 
-func FailWithMessage(c *gin.Context, msg string) {
-	Result(ERROR, nil, msg, c)
+func FailWithMessage(ctx *gin.Context, msg string) {
+	Result(ERROR, nil, msg, ctx)
 }
 
-func FailWithData(c *gin.Context, data any) {
-	Result(ERROR, data, "操作失败", c)
+func FailWithData(ctx *gin.Context, data any) {
+	Result(ERROR, data, "操作失败", ctx)
 }

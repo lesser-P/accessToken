@@ -3,6 +3,7 @@ package auth
 import (
 	"accessToken/model/system"
 	"errors"
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"log"
 	"time"
@@ -10,7 +11,7 @@ import (
 
 const Expire = 7200
 
-func CreateToken(userId int, isFreeze bool, issuer string, key string) (string, error) {
+func CreateToken(ctx *gin.Context, userId int, isFreeze bool, issuer string, key string) (string, error) {
 	claims := system.UserClaim{
 		Userid:   userId,
 		IsFreeze: isFreeze,
@@ -28,7 +29,7 @@ func CreateToken(userId int, isFreeze bool, issuer string, key string) (string, 
 	return str, nil
 }
 
-func ParseToken(str string, key string) (*system.UserClaim, error) {
+func ParseToken(ctx *gin.Context, str string, key string) (*system.UserClaim, error) {
 	claim := system.NewEmptyClaim()
 	token, err := jwt.ParseWithClaims(str, claim, func(token *jwt.Token) (interface{}, error) {
 		return []byte(key), nil
@@ -45,7 +46,14 @@ func ParseToken(str string, key string) (*system.UserClaim, error) {
 	return claim, nil
 }
 
-func RefreshTokenStatus(str string, key string) (string, error) {
+func ParseReturnToken(ctx *gin.Context, str string, key string) (*jwt.Token, error) {
+	claim := system.NewEmptyClaim()
+	return jwt.ParseWithClaims(str, claim, func(token *jwt.Token) (interface{}, error) {
+		return []byte(key), nil
+	})
+}
+
+func RefreshTokenStatus(ctx *gin.Context, str string, key string) (string, error) {
 	claim := system.NewEmptyClaim()
 	_, err := jwt.ParseWithClaims(str, claim, func(token *jwt.Token) (interface{}, error) {
 		return []byte(key), nil

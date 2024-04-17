@@ -8,6 +8,7 @@ import (
 	system "accessToken/model/system"
 	reflect "reflect"
 
+	gin "github.com/gin-gonic/gin"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -35,30 +36,30 @@ func (m *MockTokenDao) EXPECT() *MockTokenDaoMockRecorder {
 }
 
 // CreateTokenRecord mocks base method.
-func (m *MockTokenDao) CreateTokenRecord(token string, userId int) error {
+func (m *MockTokenDao) CreateTokenRecord(ctx *gin.Context, token string, userId int) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateTokenRecord", token, userId)
+	ret := m.ctrl.Call(m, "CreateTokenRecord", ctx, token, userId)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // CreateTokenRecord indicates an expected call of CreateTokenRecord.
-func (mr *MockTokenDaoMockRecorder) CreateTokenRecord(token, userId interface{}) *gomock.Call {
+func (mr *MockTokenDaoMockRecorder) CreateTokenRecord(ctx, token, userId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTokenRecord", reflect.TypeOf((*MockTokenDao)(nil).CreateTokenRecord), token, userId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTokenRecord", reflect.TypeOf((*MockTokenDao)(nil).CreateTokenRecord), ctx, token, userId)
 }
 
 // GetRecordById mocks base method.
-func (m *MockTokenDao) GetRecordById(userId int) (*system.TokenDetails, error) {
+func (m *MockTokenDao) GetRecordById(ctx *gin.Context, userId int) (*system.TokenDetails, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetRecordById", userId)
+	ret := m.ctrl.Call(m, "GetRecordById", ctx, userId)
 	ret0, _ := ret[0].(*system.TokenDetails)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetRecordById indicates an expected call of GetRecordById.
-func (mr *MockTokenDaoMockRecorder) GetRecordById(userId interface{}) *gomock.Call {
+func (mr *MockTokenDaoMockRecorder) GetRecordById(ctx, userId interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRecordById", reflect.TypeOf((*MockTokenDao)(nil).GetRecordById), userId)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRecordById", reflect.TypeOf((*MockTokenDao)(nil).GetRecordById), ctx, userId)
 }

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"accessToken/global"
 	"accessToken/internal/service"
 	"accessToken/model/common/response"
 	"github.com/gin-gonic/gin"
@@ -14,18 +15,19 @@ func NewJwtApi() *JwtHandler {
 	return &JwtHandler{}
 }
 
-func (jwt *JwtHandler) GenToken(c *gin.Context) {
-	var jwtService = service.NewJwtService()
-	userid := c.Query("userid")
+// 链路追踪 traceId tdd
+func (jwt *JwtHandler) GenToken(ctx *gin.Context) {
+	var jwtService = service.NewJwtService(ctx, global.GAL_DB)
+	userid := ctx.Query("userid")
 	id, err := strconv.Atoi(userid)
 	if err != nil {
-		response.FailWithMessage(c, err.Error())
+		response.FailWithMessage(ctx, err.Error())
 		return
 	}
-	token, err := jwtService.GenerateToken(id)
+	token, err := jwtService.GenerateToken(ctx, id)
 	if err != nil {
-		response.FailWithMessage(c, err.Error())
+		response.FailWithMessage(ctx, err.Error())
 		return
 	}
-	response.OkWithData(c, token)
+	response.OkWithData(ctx, token)
 }

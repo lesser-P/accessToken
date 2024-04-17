@@ -2,12 +2,13 @@ package dao
 
 import (
 	"accessToken/model/system"
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 type TokenDao interface {
-	CreateTokenRecord(token string, userId int) error
-	GetRecordById(userId int) (*system.TokenDetails, error)
+	CreateTokenRecord(ctx *gin.Context, token string, userId int) error
+	GetRecordById(ctx *gin.Context, userId int) (*system.TokenDetails, error)
 }
 
 func NewJwtDao(db *gorm.DB) TokenDao {
