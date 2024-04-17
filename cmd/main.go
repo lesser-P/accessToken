@@ -25,7 +25,7 @@ var _ A = (*Handler)(nil)
 
 func init() {
 	global.GAL_Viper = initialized.NewViper()
-	global.GAL_DB = initialized.NewMysqlDB()
+	global.GAL_MysqlDB = initialized.NewMysqlDB()
 	initialized.RunServer()
 
 }

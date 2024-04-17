@@ -8,10 +8,12 @@ import (
 )
 
 var (
-	GAL_Config configs.Config
-	GAL_Router *gin.Engine
-	GAL_DB     *gorm.DB
-	GAL_Viper  *viper.Viper
+	GAL_Config     configs.Config
+	GAL_Router     *gin.Engine
+	GAL_MysqlDB    *gorm.DB
+	GAL_Viper      *viper.Viper
+	DateTimeFormat = "2006-01-02 15:04:05"
+	DateFormat     = "2006-01-02"
 )
 
 const (
