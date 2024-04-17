@@ -3,9 +3,11 @@ package main
 import (
 	"accessToken/global"
 	"accessToken/initialized"
+	"accessToken/routers"
 )
 
 func main() {
+	routers.InitApiRouter()
 }
 
 type A interface {

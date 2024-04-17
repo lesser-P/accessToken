@@ -3,7 +3,7 @@ package initialized
 import (
 	"accessToken/global"
 	"accessToken/internal/middleware"
-	"accessToken/internal/routers"
+	"accessToken/routers"
 	"github.com/gin-gonic/gin"
 )
 
