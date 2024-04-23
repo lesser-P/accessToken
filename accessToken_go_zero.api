@@ -1,0 +1,50 @@
+syntax = "v1"
+
+info (
+	title:   "accessToken"
+	desc:    "type desc here"
+	author:  "Berg"
+	version: "v0.1"
+)
+
+type (
+	Token {
+		Key     string `json:"userId"`
+		issuer  string `json:"issure"`
+		Timeout int    `json:"timeout"`
+	}
+	TokenReq {
+		Token  string `form:"token",json:"token"`
+		UserId string `form:"userId",json:"userId"`
+	}
+	BaseResponse {
+		Message string `json:"message"`
+		Data    string `json:"data"`
+		Code    int    `json:"code"`
+	}
+	TokenResp {
+		BaseResponse
+	}
+	GenTokenReq {
+		UserId string `json:"userId"`
+	}
+)
+
+@server (
+	prefix: /token
+	group:  token
+)
+service accessToken_go_zero-api {
+	@handler GenTokenHandler
+	post /genToken (GenTokenReq) returns (string)
+
+	@handler ResetTokenHandler
+	post /resetToken (TokenReq) returns (TokenResp)
+
+	@handler FreezeTokenHandler
+	post /freezeTokenHandler (TokenReq) returns (TokenResp)
+
+	@handler VerifyTokenHandler
+	post /verifyTokenHandler (TokenReq) returns (TokenResp)
+}
+

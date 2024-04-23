@@ -1,0 +1,13 @@
+Name: accessToken_go_zero-api
+Host: 127.0.0.1
+Port: 8080
+Jwt:
+  key: "0xYe"
+  timeout: 8
+  issuer: "0xYe"
+DB:
+  path: "localhost"
+  port: "3306"
+  username: "root"
+  password: "root"
+  dbname: "accessToken"
