@@ -4,7 +4,7 @@ info (
 	title:   "accessToken"
 	desc:    "type desc here"
 	author:  "Berg"
-	version: "v0.1"
+	version: "v0.1.1"
 )
 
 type (
@@ -19,7 +19,7 @@ type (
 	}
 	BaseResponse {
 		Message string `json:"message"`
-		Data    string `json:"data"`
+		Data    interface{} `json:"data"`
 		Code    int    `json:"code"`
 	}
 	TokenResp {

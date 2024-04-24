@@ -24,14 +24,27 @@ func NewTokenDetail(db *gorm.DB) *TokenDetail {
 		BaseModel: BaseModel{DB: db},
 	}
 }
+func NewBaseTokenDetail(token, userId string, freeze bool, exp time.Time) *TokenDetail {
+	return &TokenDetail{
+		Token:     token,
+		UserId:    userId,
+		IsFreeze:  freeze,
+		ExpiresAt: exp,
+		BaseModel: BaseModel{
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+			IsDeleted: 0,
+		},
+	}
+}
 
-func CreateTokenDetail(ctx context.Context, db *gorm.DB) *TokenDetail {
+func NewTokenDetailFactory(ctx context.Context, db *gorm.DB) *TokenDetail {
 	return &TokenDetail{
 		BaseModel: BaseModel{Ctx: ctx, DB: db},
 	}
 }
 
-func (t *TokenDetail) SaveOrUpdate(info *TokenDetail) error {
+func (t *TokenDetail) SaveOrUpdate(ctx context.Context, info *TokenDetail) error {
 	if info.ID == nil {
 		if tx := t.DB.Table("token_details").Create(info); tx.Error != nil {
 			return tx.Error
@@ -44,14 +57,14 @@ func (t *TokenDetail) SaveOrUpdate(info *TokenDetail) error {
 	return nil
 }
 
-func (t *TokenDetail) DeleteByUserId(userId string) error {
-	if tx := t.DB.Where("user_id=?", userId).Delete(&TokenDetail{}); tx.Error != nil {
-		return tx.Error
+func (t *TokenDetail) DeleteByUserId(ctx context.Context, userId string) error {
+	if err := t.DB.Where("user_id=?", userId).Delete(&TokenDetail{}).Error; err != nil {
+		return err
 	}
 	return nil
 }
 
-func (t *TokenDetail) SelectByToken(token string) (*TokenDetail, error) {
+func (t *TokenDetail) SelectByToken(ctx context.Context, token string) (*TokenDetail, error) {
 	result := new(TokenDetail)
 	if tx := t.DB.Where("token=?", token).Select(result); tx.Error != nil {
 		return nil, tx.Error
@@ -59,7 +72,7 @@ func (t *TokenDetail) SelectByToken(token string) (*TokenDetail, error) {
 	return result, nil
 }
 
-func (t *TokenDetail) SelectByUserId(userId string) (*TokenDetail, error) {
+func (t *TokenDetail) SelectByUserId(ctx context.Context, userId string) (*TokenDetail, error) {
 	result := new(TokenDetail)
 	if tx := t.DB.Where("user_id=?", userId).Select(result); tx.Error != nil {
 		return nil, tx.Error
@@ -67,12 +80,13 @@ func (t *TokenDetail) SelectByUserId(userId string) (*TokenDetail, error) {
 	return result, nil
 }
 
-func (t *TokenDetail) FreezeToken(token string) error {
+func (t *TokenDetail) FreezeToken(ctx context.Context, token string) error {
 	result := new(TokenDetail)
-	t.DB.Where("is_freeze = ?", token).Take(result)
+	t.DB.Where("token = ?", token).Take(result)
 	if result.IsFreeze {
 		return errors.New("该Token已被冻结")
 	}
+
 	result.IsFreeze = true
 	if tx := t.DB.Save(result); tx.Error != nil {
 		return tx.Error

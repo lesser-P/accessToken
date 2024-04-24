@@ -1,7 +1,6 @@
 package token
 
 import (
-	"accessToken_go_zero/internal/model"
 	"accessToken_go_zero/internal/svc"
 	"accessToken_go_zero/internal/types"
 	"context"
@@ -15,31 +14,29 @@ type ResetTokenLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
-	mapper model.TokenDao
 }
 
-func NewResetTokenLogic(ctx context.Context, svcCtx *svc.ServiceContext, mapper model.TokenDao) *ResetTokenLogic {
+func NewResetTokenLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ResetTokenLogic {
 	return &ResetTokenLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
-		mapper: mapper,
 	}
 }
 
 func (l *ResetTokenLogic) ResetToken(req *types.TokenReq) (resp *types.TokenResp, err error) {
 	resp = &types.TokenResp{}
 	token := req.Token
-	data, err := l.mapper.SelectByToken(token)
+	data, err := l.svcCtx.Mapper.SelectByToken(l.ctx, token)
 	if err != nil {
 		return nil, err
 	}
-	jwt := types.CreateToken(l.svcCtx.Config.Jwt.Key, l.svcCtx.Config.Jwt.Issuer, l.svcCtx.Config.Jwt.Timeout)
-	if !jwt.VailToken(l.ctx, req.Token) {
+
+	if !l.svcCtx.Token.VailToken(l.ctx, req.Token) {
 		return nil, errors.New("验证不通过无法重置")
 	}
 
-	newToken, err := jwt.ResetToken(l.ctx, token)
+	newToken, err := l.svcCtx.Token.ResetToken(l.ctx, token)
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +46,7 @@ func (l *ResetTokenLogic) ResetToken(req *types.TokenReq) (resp *types.TokenResp
 
 	data.Token = newToken
 	data.ExpiresAt = time.Now().Add(time.Hour * time.Duration(l.svcCtx.Config.Jwt.Timeout))
-	err = l.mapper.SaveOrUpdate(data)
+	err = l.svcCtx.Mapper.SaveOrUpdate(l.ctx, data)
 	if err != nil {
 		return nil, err
 	}

@@ -1,6 +1,7 @@
 package config
 
 import (
+	"accessToken_go_zero/internal/model"
 	"accessToken_go_zero/internal/types"
 	"github.com/zeromicro/go-zero/rest"
 )
@@ -8,7 +9,7 @@ import (
 type Config struct {
 	rest.RestConf
 	DB struct {
-		types.MysqlDB
+		model.MysqlDB
 	}
 	Jwt struct {
 		types.Token

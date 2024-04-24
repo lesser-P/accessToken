@@ -1,7 +1,6 @@
 package token
 
 import (
-	"accessToken_go_zero/internal/model"
 	"net/http"
 
 	"accessToken_go_zero/internal/logic/token"
@@ -17,8 +16,7 @@ func GenTokenHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
-		mapper := model.NewTokenDetail(svcCtx.DB)
-		l := token.NewGenTokenLogic(r.Context(), svcCtx, mapper)
+		l := token.NewGenTokenLogic(r.Context(), svcCtx)
 		resp, err := l.GenToken(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)

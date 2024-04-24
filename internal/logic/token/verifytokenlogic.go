@@ -25,8 +25,7 @@ func NewVerifyTokenLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Verif
 }
 
 func (l *VerifyTokenLogic) VerifyToken(req *types.TokenReq) (resp *types.TokenResp, err error) {
-	jwt := types.CreateToken(l.svcCtx.Config.Jwt.Key, l.svcCtx.Config.Jwt.Issuer, l.svcCtx.Config.Jwt.Timeout)
-	if !jwt.VailToken(l.ctx, req.Token) {
+	if !l.svcCtx.Token.VailToken(l.ctx, req.Token) {
 		return nil, errors.New("验证失败")
 	}
 	resp = &types.TokenResp{
