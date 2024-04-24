@@ -1,0 +1,13 @@
+Name: access.rpc
+ListenOn: 127.0.0.1:9090
+Mode: dev
+Jwt:
+  key: "0xYe"
+  exp: 8
+  issuer: "0xYe"
+DB:
+  path: "localhost"
+  port: "3306"
+  username: "root"
+  password: "root"
+  dbname: "accessToken"

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+
+package access;
+option go_package="./token";
+
+message GenReq {
+  string userId=1;
+}
+message Result {
+  string info=1;
+}
+message TokenReq{
+  string userId=1;
+  string token=2;
+}
+message TokenResp{
+  int64 code=1;
+  string message=2;
+  string data=3;
+}
+
+service Access {
+  rpc GenToken(GenReq) returns(TokenResp);
+  rpc FreezeToken(TokenReq)returns(TokenResp);
+  rpc ResetToken(TokenReq)returns(TokenResp);
+  rpc VerifyToken(TokenReq)returns(TokenResp);
+}
