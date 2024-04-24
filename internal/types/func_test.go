@@ -1,7 +1,6 @@
-package tests
+package types
 
 import (
-	"accessToken_go_zero/internal/types"
 	"context"
 	"github.com/smartystreets/goconvey/convey"
 	"testing"
@@ -10,18 +9,19 @@ import (
 
 func TestCreateToken(t *testing.T) {
 	convey.Convey("测试CreateToken方法", t, func() {
-		token := types.Token{
-			Key:     "ye",
+		token := Token{
+			Key:     "0xYe",
 			Issuer:  "0xYe",
 			Timeout: 8,
 		}
-		newToken := types.CreateToken("ye", "0xYe", 8)
+		newToken := NewTokenFactory("0xYe", "0xYe", 8)
 		convey.So(&token, convey.ShouldEqual, newToken)
 	})
 }
+
 func TestGenerateToken(t *testing.T) {
 	convey.Convey("测试GenerateToken", t, func() {
-		jwt := types.CreateToken("ye", "0xYe", 8)
+		jwt := NewTokenFactory("ye", "0xYe", 8)
 		ctx := context.Background()
 		token, err := jwt.GenerateToken(ctx, "123", false)
 		convey.Convey("验证生成token正确性", func() {
@@ -32,12 +32,13 @@ func TestGenerateToken(t *testing.T) {
 		})
 	})
 }
+
 func TestFuncResetToken(t *testing.T) {
 	convey.Convey("测试ResetToken", t, func() {
 		ctx := context.Background()
 		// 过期Token
 		const OLDTOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyaWQiOiIzMyIsIklzRnJlZXplIjpmYWxzZSwiU3RhbmRhcmRDbGFpbSI6eyJpc3MiOiIweFllIiwiZXhwIjoxNzEzNzg0ODM0fX0.1uujeB3-zRZpHIhay0Z-W0QxLBRv4HtrMJyDkYBw1aM"
-		tokenDetail := types.CreateToken("ye", "0xYe", 8)
+		tokenDetail := NewTokenFactory("ye", "0xYe", 8)
 		token, err := tokenDetail.ResetToken(ctx, OLDTOKEN)
 		convey.Convey("测试过期token", func() {
 			convey.So(token, convey.ShouldEqual, "")
@@ -55,9 +56,10 @@ func TestFuncResetToken(t *testing.T) {
 		})
 	})
 }
+
 func TestFuncVerifyToken(t *testing.T) {
 	convey.Convey("测试VerifyToken方法", t, func() {
-		jwt := types.CreateToken("0xYe", "0xYe", 8)
+		jwt := NewTokenFactory("0xYe", "0xYe", 8)
 		ctx := context.Background()
 		token, err := jwt.GenerateToken(ctx, "123", false)
 		convey.Convey("判断token是否生成", func() {

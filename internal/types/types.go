@@ -3,7 +3,7 @@ package types
 
 type BaseResponse struct {
 	Message string `json:"message"`
-	Data    string `json:"data"`
+	Data    any    `json:"data"`
 	Code    int    `json:"code"`
 }
 

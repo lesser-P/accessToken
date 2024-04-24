@@ -12,7 +12,7 @@ type Token struct {
 	Timeout int    `json:"timeout"`
 }
 
-func CreateToken(key, issuer string, timeout int) *Token {
+func NewTokenFactory(key, issuer string, timeout int) *Token {
 	return &Token{
 		Key:     key,
 		Issuer:  issuer,
